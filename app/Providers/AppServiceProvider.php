@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace pruebarappi\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

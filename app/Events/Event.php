@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace pruebarappi\Events;
 
 abstract class Event
 {
