@@ -12,6 +12,6 @@
 */
 
 
-Route::get('/','FrontController@index');
-Route::post('execute','FrontController@execute');
+Route::get('/','CubeController@index');
+Route::post('execute','CubeController@execute');
 

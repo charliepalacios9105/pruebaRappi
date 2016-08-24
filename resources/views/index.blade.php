@@ -3,7 +3,7 @@
 @section('title', 'Ingreso de datos')
 
 @section('content')
-	{!!Form::open(array('action' => 'FrontController@execute','method' => 'post'))!!}
+	{!!Form::open(array('action' => 'CubeController@execute','method' => 'post'))!!}
 		<div class="form-group">
 			{!!Form::label('Valor de T:')!!}
 			{!!Form::text('tvalue',null,['class'=>'form-control','placeholder'=>'El valor de T es el número de casos de prueba que se realizarán'])!!}
