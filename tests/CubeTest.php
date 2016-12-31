@@ -4,6 +4,10 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/**
+*En esta clase estan los casos de pruebas unitarias
+*
+**/
 class CubeTest extends TestCase
 {
     /**

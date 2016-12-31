@@ -1,7 +1,12 @@
 <?php
  
 namespace pruebarappi\Classes;
- 
+
+/**
+* Esta clase realiza todas las operaciones sobre la matriz de tres dimensiones.
+*
+*
+**/ 
 class Cube {
 
 	protected $matrix =array();
@@ -15,15 +20,8 @@ class Cube {
     * @param  $length
     *
     **/
-	public function createMatrix($length){
- 		$this->matrix= array();
- 		for ($x=0; $x <$length ; $x++) { 
- 			for ($y=0; $y < $length; $y++) { 
- 				for ($z=0; $z <$length ; $z++) { 
- 					$this->matrix[$x][$y][$z]=0;
- 				}
- 			}
- 		}
+	private function createMatrix($length){
+		$this->matrix = array_fill(0, $length, array_fill(0, $length, array_fill(0, $length,0)));
  	}
 
  	/**
@@ -33,14 +31,14 @@ class Cube {
     * @param  $length
     *
     **/
-	public function evalSentence($sentence){
+	private function evalSentence($sentence){
  		$vecSentence=preg_split("/[\s]+/",$sentence);
+ 		$resp=-1;
      		if($vecSentence[0] == 'UPDATE'){
      			$xDim=$vecSentence[1]-1;
      			$yDim=$vecSentence[2]-1;
      			$zDim=$vecSentence[3]-1;
      			$this->matrix[$xDim][$yDim][$zDim]=$vecSentence[4];   		
-     			return -1;	
      		}else if ($vecSentence[0]=='QUERY') {
      			$xDim=$vecSentence[1];
      			$yDim=$vecSentence[2];
@@ -48,11 +46,44 @@ class Cube {
      			$xDimP=$vecSentence[4];
      			$yDimP=$vecSentence[5];
      			$zDimP=$vecSentence[6];
-     			return $this->sumMatrix($xDim,$yDim,$zDim,$xDimP,$yDimP,$zDimP);
+     			$resp= $this->sumMatrix($xDim,$yDim,$zDim,$xDimP,$yDimP,$zDimP);
      		}
-     		return -1;
+     		return $resp;
  	}
 
+
+    /**
+     * Esta funcion valida el numero casos de prueba ingresadoes en el parametro 
+     * tvalue y  recorre las sentencias ingresadas por en el parametro $sentences
+     * validando en que  momento inicia cada caso de prueba para 
+     * leer corectamente las  varibales correspondientes a al tamanio
+     * de las dimensiones de la matriz y el numero de ejecuciones por caso de prueba. 
+     * 
+     * @param $tvalue 
+     * @param $sentences 
+     **/    
+    public function processData($tvalue,$sentences){
+          $total=count($sentences);
+          $vecVar=[];
+          $textReturn="";
+          $numIter=0;
+          $cubeObject = new Cube();
+          $tempVar=-1;
+          for ($cadI=0; $cadI <$total && $numIter<$tvalue ; $cadI++) { 
+            $vecVar=preg_split("/[\s]+/",$sentences[$cadI]);
+            $this->createMatrix($vecVar[0]);
+            for ($caseTestI=0; $caseTestI <=$vecVar[1] ; $caseTestI++) { 
+                 $tempVar=$this->evalSentence($sentences[$cadI+$caseTestI]);
+                if($tempVar!=-1){
+                     $textReturn= $textReturn.$tempVar."<br/>";
+                 } 
+            } 
+            $numIter++;
+            $cadI=$cadI+$caseTestI-1;
+    
+          }
+          return $textReturn;  
+    }
 
 	/**
  	* Esta funcion realiza la suma de los valores que se 
@@ -63,7 +94,6 @@ class Cube {
  	* Los parametros xb,yb,zb corresponden a la segunda 
  	* coordenada.
  	*
- 	* @param  $cube
  	* @param  $xa
  	* @param  $ya
  	* @param  $za
@@ -71,7 +101,7 @@ class Cube {
  	* @param  $yb
  	* @param  $zb
  	**/ 	
-	public function sumMatrix($xa,$ya,$za,$xb,$yb,$zb){
+	private function sumMatrix($xa,$ya,$za,$xb,$yb,$zb){
  		$sum=0;
  		for ($x=$xa; $x <=$xb ; $x++) { 
  			for ($y=$ya; $y <= $yb; $y++) { 
